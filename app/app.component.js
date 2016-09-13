@@ -9,32 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var HEROES = [
-    { id: 11, name: 'Mr. Nice' },
-    { id: 12, name: 'Narco' },
-    { id: 13, name: 'Bombasto' },
-    { id: 14, name: 'Celeritas' },
-    { id: 15, name: 'Magneta' },
-    { id: 16, name: 'RubberMan' },
-    { id: 17, name: 'Dynama' },
-    { id: 18, name: 'Dr IQ' },
-    { id: 19, name: 'Magma' },
-    { id: 20, name: 'Tornado' }
-];
+var hero_service_1 = require('./hero.service');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(heroService) {
+        this.heroService = heroService;
         this.title = 'Tour of Heroes';
-        this.heroes = HEROES;
     }
+    AppComponent.prototype.getHeroes = function () {
+        var _this = this;
+        this.heroService.getHeroesSlowly().then(function (heroes) { return _this.heroes = heroes; });
+    };
+    AppComponent.prototype.ngOnInit = function () {
+        this.getHeroes();
+    };
     AppComponent.prototype.onSelect = function (hero) {
         this.selectedHero = hero;
     };
     AppComponent = __decorate([
         core_1.Component({
+            providers: [hero_service_1.HeroService],
             selector: 'my-app',
             template: "\n        <h1>{{title}}</h1>\n        <h2>My Heroes:</h2>\n        <ul class=\"heroes\">\n          <li *ngFor=\"let hero of heroes\" \n            [class.selected] = \"hero === selectedHero\"  \n            (click)=\"onSelect(hero)\">\n            <span class=\"badge\">{{hero.id}}</span> {{hero.name}}\n          </li>\n        </ul>\n        <my-hero-detail [hero]=\"selectedHero\"></my-hero-detail>\n    "
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [hero_service_1.HeroService])
     ], AppComponent);
     return AppComponent;
 }());
